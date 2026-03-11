@@ -2,10 +2,6 @@
 
 set -e
 
-# Fix storage permissions at runtime
-chown -R www-data:www-data /var/www/storage
-chmod -R 775 /var/www/storage
-
 echo "Starting Laravel application..."
 
 # Generate application key if not set
@@ -17,7 +13,6 @@ fi
 # Run migrations
 echo "Running database migrations..."
 php artisan migrate --force
-php artisan db:seed --force
 
 # Clear and cache config
 echo "Optimizing application..."
