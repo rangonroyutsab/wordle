@@ -1,6 +1,6 @@
 # Wordle Clone
 
-A full-featured Wordle clone built with Laravel 12, Livewire, and SQLite. Features daily words, guess validation, color-coded feedback, and statistics tracking.
+A full-featured Wordle clone built with Laravel 12, Livewire, and MySQL. Features daily words, guess validation, color-coded feedback, and statistics tracking.
 
 ## Features
 
@@ -19,7 +19,7 @@ A full-featured Wordle clone built with Laravel 12, Livewire, and SQLite. Featur
 
 - **Backend**: Laravel 12, PHP 8.4+
 - **Frontend**: Livewire 4, Alpine.js, Tailwind CSS
-- **Database**: SQLite (easily switchable to MySQL/PostgreSQL)
+- **Database**: MySQL 8+
 - **Testing**: PHPUnit with 23 tests covering services, APIs, and features
 
 ## Installation
@@ -29,6 +29,7 @@ A full-featured Wordle clone built with Laravel 12, Livewire, and SQLite. Featur
 - PHP 8.4 or higher
 - Composer
 - Node.js & npm (for frontend assets)
+- MySQL 8+
 
 ### Setup
 
@@ -49,28 +50,41 @@ A full-featured Wordle clone built with Laravel 12, Livewire, and SQLite. Featur
    cp .env.example .env
    php artisan key:generate
    ```
+   Then update the database credentials in `.env` to match your MySQL setup:
+   ```
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=wordle
+   DB_USERNAME=your_user
+   DB_PASSWORD=your_password
+   ```
 
-4. **Run migrations**
+4. **Create the database**
+   ```sql
+   CREATE DATABASE wordle CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   ```
+
+5. **Run migrations**
    ```bash
    php artisan migrate
    ```
 
-5. **Import word dictionary**
+6. **Import word dictionary**
    ```bash
    php artisan wordle:import-words
    ```
 
-6. **Generate daily words** (optional - creates words for next 30 days)
+7. **Generate daily words** (optional - creates words for next 30 days)
    ```bash
    php artisan wordle:set-daily-word --days=30
    ```
 
-7. **Build frontend assets**
+8. **Build frontend assets**
    ```bash
    npm run build
    ```
 
-8. **Start the development server**
+9. **Start the development server**
    ```bash
    php artisan serve
    ```
@@ -231,6 +245,14 @@ app/
 
 ## Testing
 
+Tests run against a dedicated MySQL database (`wordle_test`). Create it before running the suite:
+
+```sql
+CREATE DATABASE wordle_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+Update `DB_USERNAME` / `DB_PASSWORD` in `phpunit.xml` if your local MySQL credentials differ from the defaults.
+
 Run all tests:
 ```bash
 ./vendor/bin/phpunit
@@ -262,27 +284,13 @@ Run specific test suites:
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `APP_NAME` | Application name | Wordle |
-| `DB_CONNECTION` | Database driver | sqlite |
-| `SESSION_DRIVER` | Session storage | database |
-
-### Switching to MySQL
-
-1. Update `.env`:
-   ```
-   DB_CONNECTION=mysql
-   DB_HOST=127.0.0.1
-   DB_PORT=3306
-   DB_DATABASE=wordle
-   DB_USERNAME=root
-   DB_PASSWORD=
-   ```
-
-2. Run migrations:
-   ```bash
-   php artisan migrate:fresh
-   php artisan wordle:import-words
-   php artisan wordle:set-daily-word --days=30
-   ```
+| `DB_CONNECTION` | Database driver | `mysql` |
+| `DB_HOST` | MySQL host | `127.0.0.1` |
+| `DB_PORT` | MySQL port | `3306` |
+| `DB_DATABASE` | Database name | `wordle` |
+| `DB_USERNAME` | Database user | `root` |
+| `DB_PASSWORD` | Database password | _(empty)_ |
+| `SESSION_DRIVER` | Session storage | `database` |
 
 ## Game Rules
 
