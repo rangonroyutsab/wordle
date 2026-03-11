@@ -17,7 +17,7 @@ A full-featured Wordle clone built with Laravel 12, Livewire, and SQLite. Featur
 
 ## Tech Stack
 
-- **Backend**: Laravel 12, PHP 8.2+
+- **Backend**: Laravel 12, PHP 8.4+
 - **Frontend**: Livewire 4, Alpine.js, Tailwind CSS
 - **Database**: SQLite (easily switchable to MySQL/PostgreSQL)
 - **Testing**: PHPUnit with 23 tests covering services, APIs, and features
@@ -26,7 +26,7 @@ A full-featured Wordle clone built with Laravel 12, Livewire, and SQLite. Featur
 
 ### Prerequisites
 
-- PHP 8.2 or higher
+- PHP 8.4 or higher
 - Composer
 - Node.js & npm (for frontend assets)
 
@@ -76,6 +76,84 @@ A full-featured Wordle clone built with Laravel 12, Livewire, and SQLite. Featur
    ```
 
 Visit `http://localhost:8000` to play!
+
+## Running with Docker
+
+### Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/) installed and running
+
+### Build and Run
+
+1. **Build the image**
+   ```bash
+   docker build -t wordle .
+   ```
+
+2. **Run the container**
+   ```bash
+   docker run -d \
+     -p 8080:8080 \
+     -e APP_KEY=base64:$(openssl rand -base64 32) \
+     -e APP_ENV=production \
+     -e APP_DEBUG=false \
+     --name wordle \
+     wordle
+   ```
+
+3. Visit `http://localhost:8080` to play.
+
+### Environment Variables
+
+Pass any `.env` values as `-e` flags or use an env file:
+
+```bash
+docker run -d -p 8080:8080 --env-file .env --name wordle wordle
+```
+
+The container entrypoint automatically runs migrations and caches config/routes/views on startup.
+
+---
+
+## Deploying to Railway
+
+### Prerequisites
+
+- A [Railway](https://railway.app) account
+- The [Railway CLI](https://docs.railway.app/develop/cli) (optional, for CLI-based deploys)
+
+### Deploy via GitHub
+
+1. Push this repository to GitHub.
+2. In the Railway dashboard, click **New Project → Deploy from GitHub repo** and select this repo.
+3. Railway will detect the `Dockerfile` and build automatically.
+
+### Required Environment Variables
+
+Set these in your Railway service's **Variables** tab:
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `APP_KEY` | Laravel application key | `base64:...` (generate with `php artisan key:generate --show`) |
+| `APP_ENV` | Environment | `production` |
+| `APP_DEBUG` | Debug mode | `false` |
+| `APP_URL` | Your Railway public URL | `https://your-app.railway.app` |
+
+### Optional: Deploy via CLI
+
+```bash
+# Install Railway CLI
+npm install -g @railway/cli
+
+# Login and link project
+railway login
+railway link
+
+# Deploy
+railway up
+```
+
+---
 
 ## Scheduled Tasks
 

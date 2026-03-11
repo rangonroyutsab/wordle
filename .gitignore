@@ -1,24 +1,51 @@
-*.log
-.DS_Store
+# Laravel
 .env
 .env.backup
 .env.production
-.phpactor.json
-.phpunit.result.cache
-/.fleet
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
-/auth.json
+.env.*.local
+/vendor
 /node_modules
 /public/build
 /public/hot
 /public/storage
 /storage/*.key
 /storage/pail
-/vendor
+/storage/logs/*.log
+/bootstrap/cache/*.php
+/auth.json
 Homestead.json
 Homestead.yaml
+
+# Testing
+.phpunit.result.cache
+/.phpunit.cache
+/coverage
+/.phpunit.coverage
+
+# Build artifacts
+npm-debug.log
+yarn-error.log
+
+# IDE / Editor
+/.idea
+/.vscode
+/.fleet
+/.nova
+/.zed
+.phpactor.json
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
 Thumbs.db
+desktop.ini
+
+# Docker
+docker-compose.override.yml
+
+# SQLite databases (local dev only)
+/database/*.sqlite
+/database/*.sqlite-shm
+/database/*.sqlite-wal
