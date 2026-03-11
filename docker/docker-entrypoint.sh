@@ -13,6 +13,7 @@ fi
 # Run migrations
 echo "Running database migrations..."
 php artisan migrate --force
+php artisan wordle:import-words
 
 # Clear and cache config
 echo "Optimizing application..."
