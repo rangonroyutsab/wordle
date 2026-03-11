@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     nginx
-    
+
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -37,6 +37,9 @@ RUN composer install --optimize-autoloader --no-dev
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage \
     && chmod -R 755 /var/www/bootstrap/cache
+
+RUN chown -R www-data:www-data /var/www/storage \
+    && chmod -R 775 /var/www/storage
 
 # Copy entrypoint script
 COPY ./docker/docker-entrypoint.sh /usr/local/bin/
